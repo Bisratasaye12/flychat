@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Any signed-in user can see the user list; you can only edit yourself.
+    match /users/{uid} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Chat ids are "<uidA>_<uidB>" (sorted), so membership comes from the id.
+    match /chats/{chatId} {
+      function isMember() {
+        return request.auth != null
+          && chatId.split('_').hasAny([request.auth.uid]);
+      }
+
+      allow read, write: if isMember();
+
+      match /messages/{messageId} {
+        allow read: if isMember();
+        allow create: if isMember()
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 4000;
+        allow update, delete: if false;
+      }
+    }
+  }
+}
