@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_clone/screens/mobile_screen_layout.dart';
-import 'package:whatsapp_clone/screens/web_screen_layout.dart';
+import 'package:flychat/screens/mobile_screen_layout.dart';
+import 'package:flychat/screens/web_screen_layout.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget mobileLayout;

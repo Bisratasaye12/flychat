@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_clone/colors.dart';
+import 'package:flychat/colors.dart';
 
 class SenderMessageCard extends StatelessWidget {
   const SenderMessageCard({
