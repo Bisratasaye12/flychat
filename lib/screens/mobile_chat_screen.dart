@@ -1,76 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flychat/colors.dart';
+import 'package:flychat/models/chat_user.dart';
+import 'package:flychat/services/chat_repository.dart';
+import 'package:flychat/widgets/avatar.dart';
+import 'package:flychat/widgets/chat_input.dart';
 import 'package:flychat/widgets/chat_list.dart';
-import 'package:flychat/widgets/info.dart';
 
 class MobileChatScreen extends StatelessWidget {
-  const MobileChatScreen({super.key});
+  final ChatUser me;
+  final ChatUser contact;
+  final ChatRepository chats;
+
+  const MobileChatScreen({
+    super.key,
+    required this.me,
+    required this.contact,
+    required this.chats,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(info[0]["name"].toString(),
-            style: const TextStyle(fontSize: 20)),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.videocam),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.call),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
+        backgroundColor: appBarColor,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            Avatar(user: contact, radius: 18),
+            const SizedBox(width: 10),
+            Text(contact.name, style: const TextStyle(fontSize: 20)),
+          ],
+        ),
       ),
       body: Column(children: [
-        Expanded(child: ChatList()),
-        TextField(
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: mobileChatBoxColor,
-            prefixIcon: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Icon(
-                Icons.emoji_emotions,
-                color: Colors.grey,
-              ),
-            ),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.camera_alt,
-                    color: Colors.grey,
-                  ),
-                  Icon(
-                    Icons.attach_file,
-                    color: Colors.grey,
-                  ),
-                  Icon(
-                    Icons.money,
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
-            ),
-            hintText: 'Type a message!',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
-                width: 0,
-                style: BorderStyle.none,
-              ),
-            ),
-            contentPadding: const EdgeInsets.all(10),
+        Expanded(
+          child: ChatList(
+            messages: chats.messages(me.uid, contact.uid),
+            myUid: me.uid,
           ),
+        ),
+        ChatInput(
+          onSend: (text) =>
+              chats.sendMessage(from: me.uid, to: contact.uid, text: text),
         ),
       ]),
     );
