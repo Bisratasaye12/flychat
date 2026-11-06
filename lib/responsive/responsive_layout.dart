@@ -4,8 +4,7 @@ class ResponsiveLayout extends StatelessWidget {
   final Widget mobileLayout;
   final Widget webLayout;
   const ResponsiveLayout(
-      {Key? key, required this.mobileLayout, required this.webLayout})
-      : super(key: key);
+      {super.key, required this.mobileLayout, required this.webLayout});
 
   @override
   Widget build(BuildContext context) {
