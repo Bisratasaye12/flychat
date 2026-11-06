@@ -1,52 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flychat/colors.dart';
+import 'package:flychat/models/chat_user.dart';
+import 'package:flychat/widgets/avatar.dart';
 
 class WebProfileBar extends StatelessWidget {
-  const WebProfileBar({super.key});
+  final ChatUser me;
+  final VoidCallback onSignOut;
+
+  const WebProfileBar({super.key, required this.me, required this.onSignOut});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
-        minHeight: 50,
-      ),
-      height: MediaQuery.of(context).size.height * 0.077,
-      width: MediaQuery.of(context).size.width * 0.25,
+      height: 64,
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(
-            color: dividerColor,
-          ),
-        ),
+      decoration: const BoxDecoration(
+        border: Border(right: BorderSide(color: dividerColor)),
         color: webAppBarColor,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CircleAvatar(
-            backgroundImage: const NetworkImage(
-                'https://www.socialketchup.in/wp-content/uploads/2020/05/fi-vill-JOHN-DOE.jpg'),
-            radius: 25,
+          Avatar(user: me, radius: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              me.name,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.comment,
-                  color: Colors.grey,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
+          IconButton(
+            tooltip: 'Sign out',
+            onPressed: onSignOut,
+            icon: const Icon(Icons.logout, color: Colors.grey),
           ),
         ],
       ),

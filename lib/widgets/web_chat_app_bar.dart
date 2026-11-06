@@ -1,51 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flychat/colors.dart';
+import 'package:flychat/models/chat_user.dart';
+import 'package:flychat/widgets/avatar.dart';
 
 class WebChatAppBar extends StatelessWidget {
-  const WebChatAppBar({super.key});
+  final ChatUser contact;
+
+  const WebChatAppBar({super.key, required this.contact});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.077,
-      width: MediaQuery.of(context).size.width * 0.75,
+      height: 64,
       color: webAppBarColor,
       padding: const EdgeInsets.all(10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://upload.wikimedia.org/wikipedia/commons/8/85/Elon_Musk_Royal_Society_%28crop1%29.jpg',
-                ),
-                radius: 20,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.01,
-              ),
-              const Text(
-                'Rivaan Ranawat',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.search, color: Colors.grey),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.more_vert, color: Colors.grey),
-              ),
-            ],
-          )
+          Avatar(user: contact, radius: 20),
+          const SizedBox(width: 12),
+          Text(contact.name, style: const TextStyle(fontSize: 18)),
         ],
       ),
     );
